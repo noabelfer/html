@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="scripts/timerscript.js"></script> -->
+    <title>timer</title>
+
+
+  </head>
+
+  <body>
+
+    <div class="container p-5 my-5 bg-primary text-white">
+      <input type="number" value="30" id="input_sec" required min="1">
+      <p id="pp">Hello</p>
+      <button id="btn_start" class="btn btn-dark" onclick="start(event)">start timer</button>
+      <button type="button" disabled="true" id="cancel_btn" class="btn btn-dark">cancel timer</button>
+      <p id="finished"></p>
+    </div>
+
+  </body>
+
+  <script>
+    let countdownTimer;
+    window.onload = () => {
+
+console.log("inside my script.js")
+//seconds remained
+            // Get the item with key "myKey" from local storage
+      const secondsRemained = localStorage.getItem("seconds_remained");
+      let timeOfStart = localStorage.getItem("timeOfStart")
+      let seconds_remained = localStorage.getItem("seconds_remained")
+
+      // Check if the item was found in local storage
+      if (secondsRemained) {
+        console.log('yyy')
+        // Do something with the item
+        console.log(secondsRemained);
+        now = new Date().getTime()
+        const elapsedSeconds = Math.floor((now - timeOfStart) / 1000);
+        console.log('iiiiii')
+        console.log(elapsedSeconds)
+        secondsLeft = localStorage.setItem("secondsLeft",secondsRemained - elapsedSeconds)
+        console.log(secondsLeft)
+        
+        if (elapsedSeconds < secondsRemained) {
+          window.alert("continue")
+          start(parseInt(secondsLeft))
+
+        }
+        
+      } else {
+        // Item not found
+        console.log("Item not found in local storage");
+      }
+
+      //user input 
+        const input_local = localStorage.getItem("userInput");
+
+        // Check if the item was found in local storage
+        if (input_local) {
+        // Do something with the item
+          console.log(input_local);
+
+        } else {
+          // Item not found
+          console.log("input_local not found in local storage");
+        }
+
+
+      let timerId = -1;
+
+      }
+      function start(event){
+        let seconds;
+        
+        secLeft = localStorage.getItem("secondsLeft")
+        if (secLeft) {
+
+          seconds=secLeft
+
+          user_input = localStorage.getItem("userInput")
+          }
+          // localStorage.setItem("seconds_remained", seconds);
+          // localStorage.setItem("userInput", input_local)
+          
+        
+                
+        else{
+          user_input = document.getElementById("input_sec").value
+          seconds = document.getElementById("input_sec").value  
+          localStorage.setItem("userInput",document.getElementById("input_sec").value)
+          localStorage.setItem("timeOfStart",new Date().getTime())
+          localStorage.setItem("prettyTime",new Date().toLocaleString())
+          
+
+        }
+      
+        document.getElementById('pp').innerHTML=seconds
+        document.getElementById('finished').innerText = 'timer started';
+
+        console.log('setting timer for', seconds);
+        timerId = setTimeout(
+          () => {
+            document.getElementById('finished').innerText = 'done';
+            console.log(seconds)
+            document.getElementById('cancel_btn').setAttribute('disabled', true);
+            document.getElementById("input_sec").removeAttribute('disabled');
+            document.getElementById('btn_start').removeAttribute('disabled');
+            document.getElementById('pp').innerText('');
+            clearInterval(countdownTimer);
+            clearTimeout(timerId)
+         
+            
+          },
+          (seconds) * 1000
+        );
+
+
+        // user_input = document.getElementById("input_sec").value
+
+        document.getElementById('input_sec').setAttribute('disabled', true)
+        document.getElementById('btn_start').setAttribute('disabled', true);
+        document.getElementById('cancel_btn').removeAttribute('disabled');
+
+        document.getElementById('cancel_btn').onclick = () => {
+          console.log('pppp')
+          clearTimeout(timerId);
+          clearInterval(countdownTimer)
+          document.getElementById('input_sec').value = ''
+          document.getElementById('pp').textContent = ''
+          document.getElementById('input_sec').removeAttribute('disabled')
+          document.getElementById('cancel_btn').setAttribute('disabled',true);
+          document.getElementById('btn_start').removeAttribute('disabled')
+          localStorage.clear()
+
+          }
+
+
+      // let countdownTimer;
+
+      countdownTimer = setInterval(myTimer, 1000);
+
+      function myTimer(event) {
+        
+        // --seconds
+        document.getElementById("pp").innerText = --seconds;
+
+        seconds_remained = document.getElementById("pp").innerText
+        localStorage.setItem("seconds_remained", seconds);
+        console.log(seconds)
+          if (seconds_remained <= 0) {
+          clearInterval(countdownTimer);
+          localStorage.clear()
+          document.getElementById('pp').value = ''
+          // clearTimeout(timerId)
+        }
+        }
+        }
+
+  </script>
+
+
+</html>
